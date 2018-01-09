@@ -17,7 +17,10 @@ export class ThreadSectionComponent implements OnInit {
 
   ngOnInit() {
 
-        this.threadsService.loadUserThreads();
+        this.threadsService.loadUserThreads()
+          .subscribe(
+            console.log
+          );
 
   }
 
