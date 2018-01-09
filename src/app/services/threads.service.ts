@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {AllUserData} from "../../../shared/to/all-user-data";
-import {Http} from "@angular/http";
+import { Observable } from 'rxjs/Observable';
+import { HttpClient } from "@angular/common/http";
+import 'rxjs/add/operator/map';
+import { AllUserData } from '../../../shared/to/all-user-data';
 
 @Injectable()
 export class ThreadsService {
 
-   constructor(private http: Http) { }
+  constructor(private httpClient: HttpClient) { }
 
-
-    loadUserThreads(): Observable<AllUserData> {
-        return this.http.get('/api/threads')
-            .map(res => res.json());
-    }
+  loadUserThreads(): Observable<AllUserData> {
+    return this.httpClient.get<AllUserData>('/api/threads')
+      .map(res =>res);
+  }
 
 }
