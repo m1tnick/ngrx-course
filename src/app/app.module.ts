@@ -11,8 +11,48 @@ import { ThreadListComponent } from './thread-list/thread-list.component';
 import { MessageListComponent } from './message-list/message-list.component';
 import {ThreadsService} from "./services/threads.service";
 import { StoreModule } from "@ngrx/store";
-import { INITIAL_APPLICATION_STATE } from 'app/store/application-state';
+import { INITIAL_APPLICATION_STATE, ApplicationState } from 'app/store/application-state';
+import { Action } from '@ngrx/store';
+import { LOAD_USER_THREADS_ACTION, LoadUserThreadsAction } from 'app/store/actions';
 
+import * as _ from 'lodash';
+import { StoreData } from 'app/store/store-data';
+import { ActionReducerMap } from '@ngrx/store/src/models';
+import { UiState } from 'app/store/ui-state';
+
+
+export const reducers: ActionReducerMap<ApplicationState> = {
+  uiState: uiStateReducer,
+  storeData: storeReducer
+};
+
+export function uiStateReducer(state: UiState, action: Action) : UiState {
+ 
+  return state;
+}
+
+function storeReducer(state: StoreData, action: Action) : StoreData {
+  switch(action.type) {
+    case LOAD_USER_THREADS_ACTION:
+      return handleLoadUserThreadsAction(state,<LoadUserThreadsAction>action); 
+    default: 
+      return state;
+  }
+}
+
+function handleLoadUserThreadsAction(state: StoreData, 
+  action: LoadUserThreadsAction): StoreData {
+    const userData = action.payload;
+    var newState: StoreData = Object.assign({},state);
+
+    newState = {
+      participants: _.keyBy(action.payload.participants, 'id'),
+      messages: _.keyBy(action.payload.messages, 'id'),
+      threads: _.keyBy(action.payload.threads, 'id'),
+    }
+
+    return newState;
+}
 
 @NgModule({
   declarations: [
@@ -27,7 +67,8 @@ import { INITIAL_APPLICATION_STATE } from 'app/store/application-state';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    StoreModule.forRoot({}, {initialState: INITIAL_APPLICATION_STATE})
+    //StoreModule.forRoot({storeReducer})
+    StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE})
   ],
   providers: [ThreadsService],
   bootstrap: [AppComponent]
