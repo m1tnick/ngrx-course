@@ -15,8 +15,8 @@ export class ThreadSectionComponent implements OnInit {
   constructor(private threadsService: ThreadsService,
     private store: Store<ApplicationState>) {
       store.subscribe(
-        console.log
-      )
+        state => console.log('thread section received state', state)
+      );
   }
 
 
