@@ -3,4 +3,7 @@
     <span><h3>User: {{userName$ | async}}</h3></span>
     <span>Unread messages: {{unreadMessagesCounter$ | async}}</span>
   </div>
+
+  <thread-list [threads]="threadsSummaries$ | async"></thread-list>
+
 </div>
