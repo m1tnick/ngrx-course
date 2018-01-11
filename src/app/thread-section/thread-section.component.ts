@@ -8,9 +8,9 @@ import { Thread } from '../../../shared/model/thread';
 import * as _ from 'lodash';
 
 import { ThreadSummaryVM } from 'app/thread-section/thread-summary.vm';
-import { mapStateToUserName } from 'app/thread-section/mapStateToUserName';
 import { mapStateToUnreadMessagesCounter } from 'app/thread-section/mapStateToUnreadMessagesCounter';
 import { stateToTthreadSummariesSelector } from 'app/thread-section/stateToThreadSummariesSelector';
+import { userNameSelector } from 'app/thread-section/userNameSelector';
 @Component({
   selector: 'thread-section',
   templateUrl: './thread-section.component.html',
@@ -25,31 +25,22 @@ export class ThreadSectionComponent implements OnInit {
   constructor(private threadsService: ThreadsService,
     private store: Store<ApplicationState>) {
 
-      this.userName$ = store
-                      .skip(1)
-                      .map(mapStateToUserName);
+      this.userName$ = store.select(userNameSelector);
 
       this.unreadMessagesCounter$ =
-        store
-        .skip(1)                      
-        .map(mapStateToUnreadMessagesCounter);
+        store.map(mapStateToUnreadMessagesCounter);
 
-       
       this.threadsSummaries$ = store.select(stateToTthreadSummariesSelector);
   }
 
 
-
-
   ngOnInit() {
-
-        this.threadsService.loadUserThreads()
-          .subscribe(
-            allUserData => this.store.dispatch(
-              new LoadUserThreadsAction(allUserData)
-            )
-          );
-
+    this.threadsService.loadUserThreads()
+      .subscribe(
+        allUserData => this.store.dispatch(
+          new LoadUserThreadsAction(allUserData)
+        )
+      );
   }
 
 }
