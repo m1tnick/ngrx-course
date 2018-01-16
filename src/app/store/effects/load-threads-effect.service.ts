@@ -15,6 +15,10 @@ export class LoadThreadsEffectService {
     userThreads$: Observable<Action> = 
       this.actions$
       .ofType(LOAD_USER_THREADS_ACTION)
+      //.do(val => console.log("action received", val))
+      .debug("action received")
       .switchMap(() => this.threadsService.loadUserThreads())
+      //.do(val => console.log("data received via HTTP request", val))
+      .debug("data received via HTTP request")
       .map(allUserData => {console.log(allUserData); return new UserThreadsLoadedAction(allUserData)});
 }

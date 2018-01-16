@@ -20,7 +20,7 @@ import * as _ from 'lodash';
 import { StoreData } from 'app/store/store-data';
 import { ActionReducerMap } from '@ngrx/store/src/models';
 import { UiState } from 'app/store/ui-state';
-
+import { StoreDevtoolsModule } from "@ngrx/store-devtools"
 
 
 export const reducers: ActionReducerMap<ApplicationState> = {
@@ -63,7 +63,7 @@ function handleLoadUserThreadsAction(state: StoreData,
     ThreadSectionComponent,
     MessageSectionComponent,
     ThreadListComponent,
-    MessageListComponent
+    MessageListComponent 
   ],
   imports: [
     BrowserModule,
@@ -71,7 +71,8 @@ function handleLoadUserThreadsAction(state: StoreData,
     HttpClientModule,
     //StoreModule.forRoot({storeReducer})
     StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
-    EffectsModule.forRoot([LoadThreadsEffectService])
+    EffectsModule.forRoot([LoadThreadsEffectService]),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [ThreadsService],
   bootstrap: [AppComponent]
