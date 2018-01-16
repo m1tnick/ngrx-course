@@ -2,6 +2,7 @@ import { ApplicationState } from "app/store/application-state";
 import { Thread } from "../../../shared/model/thread";
 import { ThreadSummaryVM } from 'app/thread-section/thread-summary.vm';
 import * as _ from 'lodash';
+import { buildThreadParticipantsList } from "app/shared/mapping/buildThreadParticipantsList";
 
 export function stateToTthreadSummariesSelector(state: ApplicationState): ThreadSummaryVM[]
  {
@@ -10,16 +11,13 @@ export function stateToTthreadSummariesSelector(state: ApplicationState): Thread
   }
 
   function mapThreadToThreadSummary(state: ApplicationState, thread: Thread): ThreadSummaryVM {
-    const names = _.keys(thread.participants).map(
-      participantId => state.storeData.participants[participantId].name);
-
      const lastMessageId = _.last(thread.messageIds),
       lastMessage = state.storeData.messages[lastMessageId];
 
 
     return {
       id: thread.id,
-      participantNames: _.join(names, ","),
+      participantNames: buildThreadParticipantsList(state, thread),
       lastMessageText: lastMessage.text,
       timestamp:  lastMessage.timestamp
     }

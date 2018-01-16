@@ -4,6 +4,8 @@
     <span>Unread messages: {{unreadMessagesCounter$ | async}}</span>
   </div>
 
-  <thread-list [threads]="threadsSummaries$ | async" (threadSelected)="onThreadSelected($event)"></thread-list>
+  <thread-list [threads]="threadsSummaries$ | async" 
+  [currentSelectedThreadId]="currentSelectedThreadId$ | async"
+  (threadSelected)="onThreadSelected($event)"></thread-list>
 
 </div>
