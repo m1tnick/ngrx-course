@@ -16,45 +16,21 @@ import { Action } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction, LoadUserThreadsAction } from 'app/store/actions';
 import { LoadThreadsEffectService } from 'app/store/effects/load-threads-effect.service';
-import * as _ from 'lodash';
+
 import { StoreData } from 'app/store/store-data';
 import { ActionReducerMap } from '@ngrx/store/src/models';
-import { UiState } from 'app/store/ui-state';
+import { UiState, INITIAL_UI_STATE } from 'app/store/ui-state';
 import { StoreDevtoolsModule } from "@ngrx/store-devtools"
+import { uiState } from 'app/store/reducers/uiStateReducer';
+import { storeData } from 'app/store/reducers/storeDataReducer';
+import { combineReducers } from '@ngrx/store/src/utils';
 
 
 export const reducers: ActionReducerMap<ApplicationState> = {
-  uiState: uiStateReducer,
-  storeData: storeReducer
+  uiState: uiState,
+  storeData: storeData
 };
 
-export function uiStateReducer(state: UiState, action: Action) : UiState {
- 
-  return state;
-}
-
-function storeReducer(state: StoreData, action: Action) : StoreData {
-  switch(action.type) {
-    case USER_THREADS_LOADED_ACTION:
-      return handleLoadUserThreadsAction(state,<UserThreadsLoadedAction>action); 
-    default: 
-      return state;
-  }
-}
-
-function handleLoadUserThreadsAction(state: StoreData, 
-  action: UserThreadsLoadedAction): StoreData {
-    const userData = action.payload;
-    var newState: StoreData = Object.assign({},state);
-
-    newState = {
-      participants: _.keyBy(action.payload.participants, 'id'),
-      messages: _.keyBy(action.payload.messages, 'id'),
-      threads: _.keyBy(action.payload.threads, 'id'),
-    }
-
-    return newState;
-}
 
 @NgModule({
   declarations: [
@@ -71,6 +47,7 @@ function handleLoadUserThreadsAction(state: StoreData,
     HttpClientModule,
     //StoreModule.forRoot({storeReducer})
     StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
+    //StoreModule.forRoot(combineReducers({uiState, storeData}), {initialState: INITIAL_APPLICATION_STATE}),
     EffectsModule.forRoot([LoadThreadsEffectService]),
     StoreDevtoolsModule.instrument()
   ],
