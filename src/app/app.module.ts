@@ -13,12 +13,14 @@ import {ThreadsService} from "./services/threads.service";
 import { StoreModule } from "@ngrx/store";
 import { INITIAL_APPLICATION_STATE, ApplicationState } from 'app/store/application-state';
 import { Action } from '@ngrx/store';
-import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction } from 'app/store/actions';
-
+import { EffectsModule } from '@ngrx/effects';
+import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction, LoadUserThreadsAction } from 'app/store/actions';
+import { LoadThreadsEffectService } from 'app/store/effects/load-threads-effect.service';
 import * as _ from 'lodash';
 import { StoreData } from 'app/store/store-data';
 import { ActionReducerMap } from '@ngrx/store/src/models';
 import { UiState } from 'app/store/ui-state';
+
 
 
 export const reducers: ActionReducerMap<ApplicationState> = {
@@ -68,7 +70,8 @@ function handleLoadUserThreadsAction(state: StoreData,
     FormsModule,
     HttpClientModule,
     //StoreModule.forRoot({storeReducer})
-    StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE})
+    StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
+    EffectsModule.forRoot([LoadThreadsEffectService])
   ],
   providers: [ThreadsService],
   bootstrap: [AppComponent]
