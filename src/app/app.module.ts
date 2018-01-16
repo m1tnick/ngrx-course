@@ -13,7 +13,7 @@ import {ThreadsService} from "./services/threads.service";
 import { StoreModule } from "@ngrx/store";
 import { INITIAL_APPLICATION_STATE, ApplicationState } from 'app/store/application-state';
 import { Action } from '@ngrx/store';
-import { LOAD_USER_THREADS_ACTION, LoadUserThreadsAction } from 'app/store/actions';
+import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction } from 'app/store/actions';
 
 import * as _ from 'lodash';
 import { StoreData } from 'app/store/store-data';
@@ -33,15 +33,15 @@ export function uiStateReducer(state: UiState, action: Action) : UiState {
 
 function storeReducer(state: StoreData, action: Action) : StoreData {
   switch(action.type) {
-    case LOAD_USER_THREADS_ACTION:
-      return handleLoadUserThreadsAction(state,<LoadUserThreadsAction>action); 
+    case USER_THREADS_LOADED_ACTION:
+      return handleLoadUserThreadsAction(state,<UserThreadsLoadedAction>action); 
     default: 
       return state;
   }
 }
 
 function handleLoadUserThreadsAction(state: StoreData, 
-  action: LoadUserThreadsAction): StoreData {
+  action: UserThreadsLoadedAction): StoreData {
     const userData = action.payload;
     var newState: StoreData = Object.assign({},state);
 
