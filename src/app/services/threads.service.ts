@@ -6,6 +6,7 @@ import { AllUserData } from '../../../shared/to/all-user-data';
 import { SendNewMessageActionPayload } from 'app/store/actions';
 import { commonNewHttpHeaders, commonOldHttpHeaders } from 'app/services/commonHttpHeaders';
 import {Http, Headers} from "@angular/http";
+import { Message } from '../../../shared/model/message';
 
 
 @Injectable()
@@ -32,4 +33,9 @@ export class ThreadsService {
       JSON.stringify({text: payload.text}),
       commonOldHttpHeaders(payload.participantId));      
   }  
+
+
+  loadNewMessagesForUser(): Observable<Message[]> {
+    return null;
+  }
 }
