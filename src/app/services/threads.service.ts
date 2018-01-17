@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import 'rxjs/add/operator/map';
 import { AllUserData } from '../../../shared/to/all-user-data';
+import { SendNewMessageActionPayload } from 'app/store/actions';
+import { commonHttpHeaders } from 'app/services/commonHttpHeaders';
 
 @Injectable()
 export class ThreadsService {
@@ -11,11 +13,16 @@ export class ThreadsService {
 
   loadUserThreads(userId:number): Observable<AllUserData> {
 
-    const headers = new HttpHeaders({'USERID': userId.toString()});
-    
 
-    return this.httpClient.get<AllUserData>('/api/threads', {headers})
+    
+    return this.httpClient.get<AllUserData>('/api/threads', commonHttpHeaders(userId))
       .map(res =>res);
   }
 
+
+  saveNewMessage(payload: SendNewMessageActionPayload): Observable<any> {
+    return this.httpClient.post(`/api/threads/${payload.threadId}`, 
+      JSON.stringify({text: payload.text}),
+      commonHttpHeaders(payload.participantId));
+  }
 }

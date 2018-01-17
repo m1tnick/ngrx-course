@@ -24,6 +24,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools"
 import { uiState } from 'app/store/reducers/uiStateReducer';
 import { storeData } from 'app/store/reducers/storeDataReducer';
 import { combineReducers } from '@ngrx/store/src/utils';
+import { WriteNewMessageEffectService } from 'app/store/effects/write-new-message-effect.service';
 
 
 const reducers = {
@@ -46,7 +47,7 @@ const reducers = {
     FormsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
-    EffectsModule.forRoot([LoadThreadsEffectService]),
+    EffectsModule.forRoot([LoadThreadsEffectService, WriteNewMessageEffectService]),
     StoreDevtoolsModule.instrument()
   ],
   providers: [ThreadsService],
