@@ -1,4 +1,3 @@
-
 import {Application,Request,Response} from 'express';
 import {AllUserData} from "../../../shared/to/all-user-data";
 import {findDbThreadsPerUser} from "../persistence/findDbThreadsPerUser";

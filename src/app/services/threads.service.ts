@@ -4,25 +4,32 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import 'rxjs/add/operator/map';
 import { AllUserData } from '../../../shared/to/all-user-data';
 import { SendNewMessageActionPayload } from 'app/store/actions';
-import { commonHttpHeaders } from 'app/services/commonHttpHeaders';
+import { commonNewHttpHeaders, commonOldHttpHeaders } from 'app/services/commonHttpHeaders';
+import {Http, Headers} from "@angular/http";
+
 
 @Injectable()
 export class ThreadsService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: Http, private httpClient: HttpClient) { }
 
   loadUserThreads(userId:number): Observable<AllUserData> {
 
 
     
-    return this.httpClient.get<AllUserData>('/api/threads', commonHttpHeaders(userId))
+    return this.httpClient.get<AllUserData>('/api/threads', commonNewHttpHeaders(userId))
       .map(res =>res);
   }
 
 
   saveNewMessage(payload: SendNewMessageActionPayload): Observable<any> {
-    return this.httpClient.post(`/api/threads/${payload.threadId}`, 
+    // return this.httpClient.post(`/api/threads/${payload.threadId}`, 
+    //   JSON.stringify({text: payload.text}),
+    //   commonHttpHeaders(payload.participantId));
+
+
+      return this.http.post(`/api/threads/${payload.threadId}`,
       JSON.stringify({text: payload.text}),
-      commonHttpHeaders(payload.participantId));
-  }
+      commonOldHttpHeaders(payload.participantId));      
+  }  
 }

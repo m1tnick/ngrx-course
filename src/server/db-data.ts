@@ -93,6 +93,7 @@ export const dbMessages: {[key: number]: Message} = {
         text: 'OK, no problem',
         timestamp: new Date().getTime()
     },
+
     5: {
         id: 5,
         threadId: 1,
@@ -100,6 +101,7 @@ export const dbMessages: {[key: number]: Message} = {
         text: 'Great',
         timestamp: new Date().getTime()
     },
+
     6: {
         id: 6,
         threadId: 2,
@@ -192,7 +194,6 @@ export const dbMessagesQueuePerUser: {[key: number]: number[]} = {
     5: []
 
 };
-
 
 
 

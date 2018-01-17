@@ -1,5 +1,3 @@
-
-
 import {Thread} from "../../../shared/model/thread";
 import {dbThreads} from "../db-data";
 import * as _ from 'lodash';
