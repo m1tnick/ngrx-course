@@ -53,11 +53,17 @@ export function storeData(state: StoreData, action: Action) : StoreData {
     action: NewMessageReceivedAction) {
       const newStoreState = _.cloneDeep(state);
 
-      const newMessage = action.payload;
+      const newMessage = action.payload.unreadMessages,
+        currentThreadId = action.payload.currentThreadId,
+        currentUserId = action.payload.currentUserId;
 
       newMessage.forEach(message => {
         newStoreState.messages[message.id] = message;
         newStoreState.threads[message.threadId].messageIds.push(message.id);
+
+        if(message.threadId !== currentThreadId) {
+          newStoreState.threads[message.threadId].participants[currentUserId] += 1;
+        }
       });
 
 

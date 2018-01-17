@@ -20,6 +20,11 @@ export class ServerNotificationEffectsService {
         .map(([any,uiState]) => uiState)
         .filter(uiState => uiState.userId !== undefined)
         .switchMap((uiState) => this.threadService.loadNewMessagesForUser(uiState.userId)
-        .map(messages => new NewMessageReceivedAction(messages)));
+        .withLatestFrom(this.store.select("uiState"))
+        .map(([unreadMessages, uiState]) => new NewMessageReceivedAction({
+            unreadMessages, 
+            currentThreadId: uiState.currentThreadId,
+            currentUserId: uiState.userId
+        })));
 
 }
