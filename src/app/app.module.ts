@@ -26,9 +26,9 @@ import { storeData } from 'app/store/reducers/storeDataReducer';
 import { combineReducers } from '@ngrx/store/src/utils';
 
 
-export const reducers: ActionReducerMap<ApplicationState> = {
-  uiState: uiState,
-  storeData: storeData
+const reducers = {
+  uiState,
+  storeData
 };
 
 
@@ -45,9 +45,7 @@ export const reducers: ActionReducerMap<ApplicationState> = {
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    //StoreModule.forRoot({storeReducer})
     StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
-    //StoreModule.forRoot(combineReducers({uiState, storeData}), {initialState: INITIAL_APPLICATION_STATE}),
     EffectsModule.forRoot([LoadThreadsEffectService]),
     StoreDevtoolsModule.instrument()
   ],

@@ -8,6 +8,8 @@ export const SELECT_USER_ACTION = 'SELECT_USER_ACTION';
 
 export class LoadUserThreadsAction implements Action{
     readonly type = LOAD_USER_THREADS_ACTION;
+
+    constructor(public payload: number) {}
 }
 
 export class UserThreadsLoadedAction implements Action {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {ThreadsService} from "../services/threads.service";
 import { Store } from '@ngrx/store';
 import { ApplicationState } from 'app/store/application-state';
@@ -16,12 +16,14 @@ import { userNameSelector } from 'app/thread-section/userNameSelector';
   templateUrl: './thread-section.component.html',
   styleUrls: ['./thread-section.component.css']
 })
-export class ThreadSectionComponent implements OnInit {
+export class ThreadSectionComponent {
 
   userName$: Observable<string>;
   unreadMessagesCounter$: Observable<number>;
   threadsSummaries$: Observable<ThreadSummaryVM[]>;
   currentSelectedThreadId$: Observable<number>;
+  userId$: Observable<number>;
+  
 
 
   constructor(private store: Store<ApplicationState>) {
@@ -34,11 +36,9 @@ export class ThreadSectionComponent implements OnInit {
       this.threadsSummaries$ = store.select(stateToTthreadSummariesSelector);
 
       this.currentSelectedThreadId$ = store.select(state => state.uiState.currentThreadId);
-  }
 
 
-  ngOnInit() {
-    this.store.dispatch(new LoadUserThreadsAction());
+      this.userId$ = store.select(state => state.uiState.userId);
   }
 
   onThreadSelected(selectedThreadId:number) {
