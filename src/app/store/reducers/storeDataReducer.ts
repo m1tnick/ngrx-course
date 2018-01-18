@@ -33,7 +33,14 @@ export function storeData(state: StoreData, action: Action) : StoreData {
   
   function handleSendNewMessageAction(state: StoreData, 
     action: SendNewMessageAction) {
-      const newStoreState = _.cloneDeep(state);
+      //const newStoreState = _.cloneDeep(state);
+      const newStoreState: StoreData = {
+        participants: state.participants,
+        threads: Object.assign({}, state.threads),
+        messages: Object.assign({}, state.messages)
+      };
+
+      newStoreState.threads[action.payload.threadId] = Object.assign({}, state.threads[action.payload.threadId])
 
       const currentThread = newStoreState.threads[action.payload.threadId];
 
@@ -45,6 +52,7 @@ export function storeData(state: StoreData, action: Action) : StoreData {
         id: uuid()
       };
 
+      currentThread.messageIds = currentThread.messageIds.slice(0);
       currentThread.messageIds.push(newMessage.id);
       newStoreState.messages[newMessage.id] = newMessage;
 
@@ -54,7 +62,7 @@ export function storeData(state: StoreData, action: Action) : StoreData {
   function handleNewMessagesReceivedAction(state: StoreData, 
     action: NewMessageReceivedAction) {
       const newStoreState = _.cloneDeep(state);
-
+      
       const newMessage = action.payload.unreadMessages,
         currentThreadId = action.payload.currentThreadId,
         currentUserId = action.payload.currentUserId;
