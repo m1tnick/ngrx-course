@@ -1,9 +1,10 @@
 import { UiState, INITIAL_UI_STATE } from "app/store/ui-state";
 import { StoreData, INITIAL_STORE_DATA } from "app/store/store-data";
-import { RouterState } from "@ngrx/router-store";
+import {RouterStateUrl} from "./utils";
+import * as fromRouter from '@ngrx/router-store';
 
 export interface ApplicationState {
-    router: RouterState;
+    router: fromRouter.RouterReducerState<RouterStateUrl>;
     uiState: UiState;
     storeData: StoreData
 }
@@ -11,5 +12,5 @@ export interface ApplicationState {
 export const INITIAL_APPLICATION_STATE: ApplicationState = {
     uiState: INITIAL_UI_STATE,
     storeData: INITIAL_STORE_DATA,
-    router: {path:'home'}
+    router: undefined
 }

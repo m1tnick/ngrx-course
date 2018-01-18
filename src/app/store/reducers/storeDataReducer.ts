@@ -61,7 +61,12 @@ export function storeData(state: StoreData, action: Action) : StoreData {
 
   function handleNewMessagesReceivedAction(state: StoreData, 
     action: NewMessageReceivedAction) {
-      const newStoreState = _.cloneDeep(state);
+
+      const newStoreState: StoreData = {
+        participants: state.participants,
+        threads: _.clone(state.threads),
+        messages: _.clone(state.messages)
+      };
       
       const newMessage = action.payload.unreadMessages,
         currentThreadId = action.payload.currentThreadId,
@@ -69,18 +74,38 @@ export function storeData(state: StoreData, action: Action) : StoreData {
 
       newMessage.forEach(message => {
         newStoreState.messages[message.id] = message;
-        newStoreState.threads[message.threadId].messageIds.push(message.id);
+
+        newStoreState.threads[message.threadId] = _.clone(state.threads[message.threadId]);
+
+        const messageThread = newStoreState.threads[message.threadId];
+
+        messageThread.messageIds = newStoreState.threads[message.threadId].messageIds.slice(0);
+        messageThread.messageIds.push(message.id);
 
         if(message.threadId !== currentThreadId) {
-          newStoreState.threads[message.threadId].participants[currentUserId] += 1;
+          messageThread.participants = _.clone(state.threads[message.threadId].participants);
+
+
+          messageThread.participants[currentUserId] += 1;
         }
       });
       return newStoreState;
   }
 
   function handleThreadSelectedAction(state: StoreData, action: ThreadSelectedAction) {
-    const newStoreState = _.cloneDeep(state),
-          currentThread = newStoreState.threads[action.payload.selectedThreadId];
+
+    const newStoreState: StoreData = {
+      participants: _.clone(state.participants),
+      threads: _.clone(state.threads),
+      messages: _.clone(state.messages)
+    };
+
+
+    newStoreState.threads[action.payload.selectedThreadId] = _.clone(state.threads[action.payload.selectedThreadId]);
+
+    const currentThread = newStoreState.threads[action.payload.selectedThreadId];
+
+    currentThread.participants = _.clone(currentThread.participants);
 
     currentThread.participants[action.payload.currentUserId] = 0;
 
