@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Input } from '@angular/core';
 import { ThreadSummaryVM } from 'app/thread-section/thread-summary.vm';
 import { Output, EventEmitter } from '@angular/core';
@@ -6,7 +6,8 @@ import { Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'thread-list',
   templateUrl: './thread-list.component.html',
-  styleUrls: ['./thread-list.component.css']
+  styleUrls: ['./thread-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThreadListComponent implements OnInit {
 
