@@ -8,7 +8,7 @@ export function uiState(state: UiState, action: Action) : UiState {
       case THREAD_SELECTED_ACTION:
         const newState = Object.assign({}, state);
         const act = <ThreadSelectedAction> action;
-        newState.currentThreadId = act.payload;
+        newState.currentThreadId = act.payload.selectedThreadId;
         return newState;
       case SELECT_USER_ACTION:
         return handleSelectUserAction(state, <SelectUserAction> action);
@@ -22,5 +22,5 @@ export function uiState(state: UiState, action: Action) : UiState {
     newUIState.userId = action.payload;
     newUIState.currentThreadId = undefined;
     
-    return newUIState;
+    return newUIState; 
   }

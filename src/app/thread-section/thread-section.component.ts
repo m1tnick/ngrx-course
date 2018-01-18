@@ -11,6 +11,8 @@ import { ThreadSummaryVM } from 'app/thread-section/thread-summary.vm';
 import { mapStateToUnreadMessagesCounter } from 'app/thread-section/mapStateToUnreadMessagesCounter';
 import { stateToTthreadSummariesSelector } from 'app/thread-section/stateToThreadSummariesSelector';
 import { userNameSelector } from 'app/thread-section/userNameSelector';
+import { UiState } from 'app/store/ui-state';
+import { uiState } from 'app/store/reducers/uiStateReducer';
 @Component({
   selector: 'thread-section',
   templateUrl: './thread-section.component.html',
@@ -21,8 +23,8 @@ export class ThreadSectionComponent {
   userName$: Observable<string>;
   unreadMessagesCounter$: Observable<number>;
   threadsSummaries$: Observable<ThreadSummaryVM[]>;
-  currentSelectedThreadId$: Observable<number>;
-  userId$: Observable<number>;
+
+  uiState: UiState;
   
 
 
@@ -35,14 +37,13 @@ export class ThreadSectionComponent {
 
       this.threadsSummaries$ = store.select(stateToTthreadSummariesSelector);
 
-      this.currentSelectedThreadId$ = store.select(state => state.uiState.currentThreadId);
+      store.select(state => state.uiState).subscribe(uiState => this.uiState = _.cloneDeep(uiState));
 
-
-      this.userId$ = store.select(state => state.uiState.userId);
+      //this.userId$ = store.select(state => state.uiState.userId);
   }
 
   onThreadSelected(selectedThreadId:number) {
-    this.store.dispatch(new ThreadSelectedAction(selectedThreadId));
+    this.store.dispatch(new ThreadSelectedAction({selectedThreadId, currentUserId: this.uiState.userId}));
   }
 
 }

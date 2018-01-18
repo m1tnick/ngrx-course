@@ -1,6 +1,6 @@
 import { StoreData } from "app/store/store-data";
 import { Action } from "@ngrx/store";
-import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction, SEND_NEW_MESSAGE_ACTION, SendNewMessageAction, NEW_MESSAGE_RECEIVED_ACTION, NewMessageReceivedAction } from "app/store/actions";
+import { USER_THREADS_LOADED_ACTION, UserThreadsLoadedAction, SEND_NEW_MESSAGE_ACTION, SendNewMessageAction, NEW_MESSAGE_RECEIVED_ACTION, NewMessageReceivedAction, THREAD_SELECTED_ACTION, ThreadSelectedAction } from "app/store/actions";
 import * as _ from 'lodash';
 import { Message } from "../../../../shared/model/message";
 
@@ -14,6 +14,8 @@ export function storeData(state: StoreData, action: Action) : StoreData {
         return handleSendNewMessageAction(state, <SendNewMessageAction> action);
       case NEW_MESSAGE_RECEIVED_ACTION:
         return handleNewMessagesReceivedAction(state, <NewMessageReceivedAction> action);
+      case THREAD_SELECTED_ACTION:
+        return handleThreadSelectedAction(state, <ThreadSelectedAction> action);
       default: 
         return state;
     }
@@ -65,10 +67,16 @@ export function storeData(state: StoreData, action: Action) : StoreData {
           newStoreState.threads[message.threadId].participants[currentUserId] += 1;
         }
       });
-
-
       return newStoreState;
+  }
 
+  function handleThreadSelectedAction(state: StoreData, action: ThreadSelectedAction) {
+    const newStoreState = _.cloneDeep(state),
+          currentThread = newStoreState.threads[action.payload.selectedThreadId];
+
+    currentThread.participants[action.payload.currentUserId] = 0;
+
+    return newStoreState;
   }
 
 
