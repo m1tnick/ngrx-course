@@ -23,19 +23,27 @@ import { UiState, INITIAL_UI_STATE } from 'app/store/ui-state';
 import { StoreDevtoolsModule } from "@ngrx/store-devtools"
 import { uiState } from 'app/store/reducers/uiStateReducer';
 import { storeData } from 'app/store/reducers/storeDataReducer';
-import { combineReducers } from '@ngrx/store/src/utils';
+import { combineReducers, compose } from '@ngrx/store';
 import { WriteNewMessageEffectService } from 'app/store/effects/write-new-message-effect.service';
 import { HttpModule } from '@angular/http';
 import { ServerNotificationEffectsService } from 'app/store/effects/server-notification-effects.service';
 import { MarkMessagesAsReadEffectService } from 'app/store/effects/mark-messages-as-read-effect.service';
 import { MessagesComponent } from './messages/messages.component';
-
+import {storeFreeze} from "ngrx-store-freeze";
+import { routes } from 'app/routes';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { CustomRouterStateSerializer } from 'app/store/utils';
+import * as fromRouter from '@ngrx/router-store';
+import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
 
 const reducers = {
   uiState,
-  storeData
+  storeData,
+  routerReducer: fromRouter.routerReducer
 };
-
+export const metaReducers = [storeFreeze];
 
 @NgModule({
   declarations: [
@@ -45,18 +53,22 @@ const reducers = {
     MessageSectionComponent,
     ThreadListComponent,
     MessageListComponent,
-    MessagesComponent 
+    MessagesComponent,
+    HomeComponent,
+    AboutComponent 
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     HttpModule,
-    StoreModule.forRoot(reducers, {initialState: INITIAL_APPLICATION_STATE}),
+    RouterModule.forRoot(routes, {useHash:true}),
+    StoreModule.forRoot(reducers, {metaReducers, initialState: INITIAL_APPLICATION_STATE}),
     EffectsModule.forRoot([MarkMessagesAsReadEffectService, LoadThreadsEffectService, WriteNewMessageEffectService, ServerNotificationEffectsService]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    StoreRouterConnectingModule
   ],
-  providers: [ThreadsService],
+  providers: [ {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer},ThreadsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
