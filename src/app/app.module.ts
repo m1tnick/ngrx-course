@@ -28,6 +28,7 @@ import { WriteNewMessageEffectService } from 'app/store/effects/write-new-messag
 import { HttpModule } from '@angular/http';
 import { ServerNotificationEffectsService } from 'app/store/effects/server-notification-effects.service';
 import { MarkMessagesAsReadEffectService } from 'app/store/effects/mark-messages-as-read-effect.service';
+import { MessagesComponent } from './messages/messages.component';
 
 
 const reducers = {
@@ -43,7 +44,8 @@ const reducers = {
     ThreadSectionComponent,
     MessageSectionComponent,
     ThreadListComponent,
-    MessageListComponent 
+    MessageListComponent,
+    MessagesComponent 
   ],
   imports: [
     BrowserModule,

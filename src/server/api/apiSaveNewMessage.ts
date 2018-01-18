@@ -15,6 +15,8 @@ export function apiSaveNewMessage(app: Application) {
 
         const payload = req.body;
 
+        //throw new Error("Error occurred");
+
         const threadId = parseInt(req.params.id),
             participantId = parseInt(req.headers['userid']);
 

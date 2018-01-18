@@ -1,6 +1,7 @@
 import { INITIAL_UI_STATE, UiState } from "app/store/ui-state";
 import { Action } from "@ngrx/store";
-import { THREAD_SELECTED_ACTION, SELECT_USER_ACTION, SelectUserAction, ThreadSelectedAction } from "app/store/actions";
+import { THREAD_SELECTED_ACTION, SELECT_USER_ACTION, SelectUserAction, ThreadSelectedAction, ERROR_OCCURRED_ACTION, ErrorOccurredAction } from "app/store/actions";
+import * as _ from 'lodash';
 
 export function uiState(state: UiState, action: Action) : UiState {
  
@@ -12,6 +13,8 @@ export function uiState(state: UiState, action: Action) : UiState {
         return newState;
       case SELECT_USER_ACTION:
         return handleSelectUserAction(state, <SelectUserAction> action);
+      case ERROR_OCCURRED_ACTION:
+        return handleErrorOccurredAction(state, <ErrorOccurredAction> action);
       default: 
         return state;
     }
@@ -23,4 +26,13 @@ export function uiState(state: UiState, action: Action) : UiState {
     newUIState.currentThreadId = undefined;
     
     return newUIState; 
+  }
+
+  function handleErrorOccurredAction(state: UiState, action: ErrorOccurredAction) {
+    const newUiState = _.cloneDeep(state);
+
+    newUiState.currentError = action.payload;
+
+    return newUiState;
+
   }

@@ -9,7 +9,7 @@ export class MarkMessagesAsReadEffectService {
 
     constructor(private actions$: Actions, private threadService: ThreadsService) {}
 
-    @Effect()
+    @Effect({dispatch:false})
     markMessagesAsRead$ = this.actions$
         .ofType(THREAD_SELECTED_ACTION)
         .switchMap((action: ThreadSelectedAction) =>
